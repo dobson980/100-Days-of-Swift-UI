@@ -13,40 +13,45 @@ struct ContentView: View {
     @State private var coffeeAmount = 1
 
     var body: some View {
-        VStack {
-            Form {
-                
-                Section(header: Text("When do you want to wake up?")) {
-                    DatePicker("Please enter a time", selection: $wakeUp, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                }
-                Section(header: Text("Desired amount of sleep"))  {
-                    Stepper(value: $sleepAmount, in: 1...24 , step: 0.25) {
-                        Text("\(sleepAmount, specifier: "%g") hours")
+        NavigationView {
+            VStack {
+                Form {
+                    
+                    Section(header: Text("When do you want to wake up?")) {
+                        DatePicker("Please enter a time", selection: $wakeUp, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
                     }
-                }
-                Section(header: Text("Daily Coffee Intake"))  {
-
-                    Picker("Daily Coffee Intake", selection: $coffeeAmount) {
-                        ForEach(0..<20) {cup in
-                            if cup == 1 {
-                                Text("\(cup) cup")
-                            } else {
-                                Text("\(cup) cups")
-                            }
+                    Section(header: Text("Desired amount of sleep"))  {
+                        Stepper(value: $sleepAmount, in: 1...24 , step: 0.25) {
+                            Text("\(sleepAmount, specifier: "%g") hours")
                         }
                     }
-                    .pickerStyle(DefaultPickerStyle())
+                    Section(header: Text("Daily Coffee Intake"))  {
+
+                        Picker("Daily Coffee Intake", selection: $coffeeAmount) {
+                            ForEach(0..<20) {cup in
+                                if cup == 1 {
+                                    Text("\(cup) cup")
+                                } else {
+                                    Text("\(cup) cups")
+                                }
+                            }
+                        }
+                        //.pickerStyle(DefaultPickerStyle())
+                    }
                 }
+                Spacer()
+                Text("Your Recomended bedtime is:")
+                    .font(.headline)
+                    .padding()
+                Text("\(calculateBedtime())")
+                    .font(.largeTitle)
+                    .padding()
             }
-            Spacer()
-            Text("Your Recomended bedtime is:")
-                .font(.headline)
-                .padding()
-            Text("\(calculateBedtime())")
-                .font(.largeTitle)
-                .padding()
+            .navigationBarTitle(Text("BetterRest"))
+            //.navigationBarHidden(true)
         }
+
 }
     
     static var defaultWakeTime: Date {
